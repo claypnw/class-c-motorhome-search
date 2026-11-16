@@ -1,0 +1,1076 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Class C Motorhome Search — Payson</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700;8..60,900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light dark;
+  --bg:#f4efe4; --paper:#fdfaf2; --card:#fffdf7; --ink:#26221a; --ink-soft:#5c5546;
+  --line:#ddd2ba; --accent:#2e5a3c; --accent-ink:#ffffff; --bronze:#8a5a1d;
+  --price:#20502f; --warn-bg:#fdf3d7; --warn-line:#c99a2e; --warn-ink:#6b4e08;
+  --sold:#a33327; --shadow:0 1px 3px rgba(60,48,20,.10),0 8px 24px rgba(60,48,20,.07);
+}
+@media (prefers-color-scheme: dark){
+  :root{--bg:#171512; --paper:#201d18; --card:#26231e; --ink:#efe9db; --ink-soft:#bdb4a0;
+  --line:#453e31; --accent:#7fb98e; --accent-ink:#12241a; --bronze:#d9a45c;
+  --price:#9fd3ab; --warn-bg:#3a2f14; --warn-line:#a97f22; --warn-ink:#f2d98c;
+  --sold:#ff9a8a; --shadow:0 1px 3px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;font-size:17px;line-height:1.55}
+.wrap{max-width:1240px;margin:0 auto;padding:0 16px 56px}
+header.report{background:var(--paper);border-bottom:3px double var(--bronze);padding:34px 16px 26px;text-align:center}
+header.report .rule{width:64px;height:3px;background:var(--bronze);margin:0 auto 16px;border-radius:2px}
+h1{font-family:"Source Serif 4",Georgia,serif;font-weight:900;font-size:clamp(1.65rem,4.5vw,2.6rem);line-height:1.15;margin:0 auto 10px;max-width:22ch}
+.dateline{font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:.82rem;color:var(--bronze);margin:0 0 14px}
+.summary{max-width:860px;margin:0 auto;color:var(--ink-soft);font-size:1.02rem}
+.summary strong{color:var(--ink)}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;max-width:860px;margin:22px auto 0}
+.stat{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--accent);padding:12px 8px 10px}
+.stat b{display:block;font-family:"Source Serif 4",Georgia,serif;font-size:1.9rem;line-height:1;color:var(--price)}
+.stat span{font-size:.82rem;font-weight:600;color:var(--ink-soft)}
+.stat.sold-stat{border-top-color:var(--sold)} .stat.sold-stat b{color:var(--sold)}
+.closest{max-width:860px;margin:18px auto 0;background:var(--card);border:1px solid var(--line);padding:14px 18px;text-align:left}
+.closest h2{font-family:"Source Serif 4",Georgia,serif;font-size:1.08rem;margin:0 0 6px}
+.closest p{margin:0;color:var(--ink-soft)} .closest strong{color:var(--ink)}
+.controls{position:sticky;top:0;z-index:20;background:var(--bg);padding:14px 0 10px;display:flex;flex-wrap:wrap;gap:10px;align-items:end;border-bottom:1px solid var(--line)}
+.controls label{font-size:.8rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-soft);display:flex;flex-direction:column;gap:5px}
+.controls select,.controls input{min-height:44px;font:inherit;font-size:1rem;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink)}
+.controls .grow{flex:1 1 200px} .controls input{width:100%}
+.count-note{font-size:.92rem;color:var(--ink-soft);align-self:center;margin-left:auto}
+section{margin-top:38px}
+.sec-head{border-bottom:2px solid var(--accent);padding-bottom:8px;margin-bottom:6px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline}
+.sec-head h2{font-family:"Source Serif 4",Georgia,serif;font-weight:700;font-size:clamp(1.35rem,3vw,1.8rem);margin:0}
+.sec-head .sec-count{font-weight:700;color:var(--bronze)}
+.sec-note{color:var(--ink-soft);margin:6px 0 18px;max-width:75ch}
+.empty-line{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--bronze);padding:16px 18px;font-size:1.02rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.card[hidden]{display:none}
+.photo-wrap{position:relative}
+.photo{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#e8e0cd}
+.photo-none{display:flex;align-items:center;justify-content:center;color:var(--ink-soft);font-weight:600;font-size:.95rem;text-align:center;padding:12px}
+.sold-badge{position:absolute;top:12px;left:12px;background:var(--sold);color:#fff;font-weight:700;letter-spacing:.08em;padding:5px 12px;border-radius:4px;font-size:.85rem}
+.card.is-sold .photo{filter:grayscale(.7)}
+.card-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:10px;flex:1}
+.card h3{font-family:"Source Serif 4",Georgia,serif;font-weight:700;font-size:1.28rem;line-height:1.25;margin:0}
+.price{font-size:1.45rem;font-weight:700;color:var(--price);margin:0;font-family:"Source Serif 4",Georgia,serif}
+.facts{margin:0;display:grid;grid-template-columns:1fr 1fr;gap:7px 14px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 0}
+.facts div{min-width:0} .facts dt{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.facts dd{margin:0;font-weight:600;font-size:.96rem}
+.says{margin:0;color:var(--ink)} .says-label{display:block;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--bronze);margin-bottom:3px}
+.flag{margin:0;display:flex;gap:8px;background:var(--warn-bg);border:1px solid var(--warn-line);border-radius:6px;padding:10px 12px;color:var(--warn-ink);font-size:.95rem}
+.flag svg{flex:0 0 auto;margin-top:3px}
+.status{margin:0;font-weight:700;color:var(--sold)}
+.card-foot{margin-top:auto;display:flex;flex-direction:column;gap:12px;padding-top:6px}
+.map-link{text-decoration:none;color:var(--ink-soft)}
+.map-img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:6px}
+.map-fallback{display:none;align-items:center;justify-content:center;min-height:120px;border:1px dashed var(--bronze);border-radius:6px;background:var(--paper);font-weight:700;color:var(--bronze);text-align:center;padding:12px}
+.map-cap{font-size:.82rem;font-weight:600}
+.listing-btn{display:flex;align-items:center;justify-content:center;min-height:48px;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:1.02rem;text-decoration:none;border-radius:6px;padding:10px 16px}
+.listing-btn:focus-visible,.map-link:focus-visible{outline:3px solid var(--bronze);outline-offset:2px}
+footer{margin-top:48px;background:var(--paper);border:1px solid var(--line);padding:22px}
+footer h2{font-family:"Source Serif 4",Georgia,serif;margin:0 0 10px;font-size:1.3rem}
+footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-bottom:0}
+
+.title-row{display:flex;gap:12px;align-items:flex-start}
+.card-num{flex:0 0 auto;font-family:"Source Serif 4",Georgia,serif;font-weight:900;font-size:1.35rem;line-height:1.15;color:var(--accent-ink);background:var(--accent);padding:6px 10px;border-radius:6px;min-width:52px;text-align:center;margin-top:1px}
+.card.is-sold .card-num{background:var(--sold);color:#fff}
+.shortlist{border:2px solid var(--accent);background:var(--paper);padding:0}
+.shortlist .sec-head{border-bottom-color:var(--bronze)}
+.perm-note{max-width:860px;margin:0 auto 10px;font-weight:700;color:var(--accent);font-size:1.02rem}
+.shortlist-box{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);padding:16px 18px;font-size:1.02rem}
+@media (max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}}
+.no-results{display:none;background:var(--card);border:1px dashed var(--line);padding:18px;text-align:center;color:var(--ink-soft);margin-top:14px}
+@media (max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.controls{position:static}.count-note{margin-left:0}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="report">
+  <div class="rule" aria-hidden="true"></div>
+  <h1>Class C Motorhomes for Sale — Report for Monday, November 16, 2026</h1>
+  <p class="perm-note">Each motorhome keeps its number for good. Tell Muggy a number and that motorhome moves up to My Short List.</p>
+  <p class="dateline">Payson, Arizona &middot; Nightly update</p>
+  <p class="summary">This report searched for <strong>Class C motorhomes under 30 feet and under $25,000</strong> — Payson first, then within 100 miles, then up to 300 miles for a very good deal. Private sellers were looked for first; dealers are included where they had the best price and fit. It is built for travel with Gandy and Maevy, with room the van build did not have. Every motorhome is numbered, and inside each section the newest listing stands on top — tell Muggy a number and that motorhome will move to My Short List at the top of this page.</p>
+  <div class="stats" aria-label="Counts by section">
+    <div class="stat"><b>0</b><span>My Short List</span></div>
+    <div class="stat"><b>0</b><span>For sale in Payson</span></div>
+    <div class="stat"><b>22</b><span>Within 100 miles</span></div>
+    <div class="stat"><b>10</b><span>Up to 300 miles away</span></div>
+    <div class="stat sold-stat"><b>1</b><span>No longer listed</span></div>
+  </div>
+  <div class="closest">
+    <h2>Closest to home</h2>
+    <p>The two nearest motorhomes still for sale are the <strong>2006 Itasca Spirit in Tonto Basin, 26 miles away at $19,000</strong>, and the <strong>2002 Winnebago Minnie Winnie in Forest Lakes, about 30 miles away at $8,000</strong> — the Winnebago is the cheapest near Payson, but its seller reports serious hail damage to the roof. Full details are in the cards below.</p>
+  </div>
+</header>
+<div class="wrap">
+  <div class="controls" role="region" aria-label="Sort and filter the motorhomes">
+    <label>Sort cards by
+      <select id="sortSel">
+        <option value="listed">Newest listed first (report order)</option>
+        <option value="price-asc">Price — lowest first</option>
+        <option value="price-desc">Price — highest first</option>
+        <option value="dist-asc">Distance — nearest first</option>
+        <option value="miles-asc">Miles — lowest first</option>
+        <option value="year-desc">Year — newest first</option>
+        <option value="listed-desc">Listed date — newest first</option>
+      </select>
+    </label>
+    <label>Show sellers
+      <select id="sellerSel">
+        <option value="all">All sellers</option>
+        <option value="private">Private sellers only</option>
+        <option value="dealer">Dealers only</option>
+      </select>
+    </label>
+    <label class="grow">Search by name or town
+      <input id="searchBox" type="search" placeholder="Try: Tioga, Mesa, Winnebago…" autocomplete="off">
+    </label>
+    <span class="count-note" id="countNote" aria-live="polite"></span>
+  </div>
+
+  <section class="shortlist" aria-labelledby="h-shortlist" style="padding:18px 18px 20px">
+    <div class="sec-head"><h2 id="h-shortlist">My Short List</h2><span class="sec-count">0 motorhomes</span></div>
+    <p class="sec-note">The motorhomes you want to keep at the top of your list. They keep their numbers here, so you can still tell Muggy which one you mean.</p>
+    <p class="shortlist-box">Nothing here yet. Tell Muggy the number of any motorhome on this page, and it will move up here and keep its number.</p>
+  </section>
+
+  <section aria-labelledby="h-payson">
+    <div class="sec-head"><h2 id="h-payson">Still for sale in Payson</h2><span class="sec-count">0 found</span></div>
+    <p class="empty-line">No Class C motorhome under $25,000 and under 30 feet was found for sale in Payson today. The one Payson listing found is in the No longer listed section — it sold.</p>
+  </section>
+
+  <section aria-labelledby="h-near">
+    <div class="sec-head"><h2 id="h-near">Still for sale within 100 miles of Payson</h2><span class="sec-count">22 motorhomes</span></div>
+    <p class="sec-note">Newest listing on top, by the date the listing was posted. Each motorhome keeps its permanent number. Distances are as stated in the listings or measured from Payson to the town shown.</p>
+    <div class="grid" data-grid>
+<article class="card" data-num="31" data-price="5500" data-dist="60" data-miles="75174" data-year="1985" data-seller="private" data-search="1985 coachmen classic mesa, az private seller #31 number 31">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p30-mesa-coachmen-classic.jpg" alt="Photo of the 1985 Coachmen Classic from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 31">#31</span><h3>1985 Coachmen Classic</h3></div>
+    <p class="price">$5,500 or best offer</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>November 15, 2026</dd></div>
+
+      <div><dt>Length</dt><dd>Length not stated — seller calls it a Class C</dd></div>
+      <div><dt>Miles</dt><dd>75,174 miles, recorded on the title in 2022</dd></div>
+      <div><dt>Where</dt><dd>Mesa, AZ</dd></div>
+      <div><dt>Distance</dt><dd>about 60 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Private seller</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>Ford E-350 Class C motorhome; newer tires; overhead sleeping area; retractable awning; Arizona title in hand; no known mechanical issues.</p>
+    <p class="flag"><svg aria-hidden="true" viewBox="0 0 24 24" width="17" height="17"><path fill="currentColor" d="M12 2 1.5 20.5h21L12 2zm0 6.2 5.4 9.3H6.6L12 8.2zM11 11v4h2v-4h-2zm0 5v2h2v-2h-2z"/></svg><span><strong>Check first:</strong> It ran when parked about two years ago and has not been used since; sold as-is.</span></p>
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=33.42,-111.83" target="_blank" rel="noopener" aria-label="Map of Mesa, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-33.42--111.83.png" alt="Small map of Mesa, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Mesa, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Mesa, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.facebook.com/marketplace/item/1584065896808233" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="32" data-price="10500" data-dist="62" data-miles="999999999" data-year="1994" data-seller="private" data-search="1994 fleetwood tioga arrow mesa, az private seller #32 number 32">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p31-mesa-tioga-arrow.jpg" alt="Photo of the 1994 Fleetwood Tioga Arrow from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 32">#32</span><h3>1994 Fleetwood Tioga Arrow</h3></div>
+    <p class="price">$10,500</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>November 15, 2026</dd></div>
+
+      <div><dt>Length</dt><dd>28 ft</dd></div>
+      <div><dt>Miles</dt><dd>Miles not stated</dd></div>
+      <div><dt>Where</dt><dd>Mesa, AZ</dd></div>
+      <div><dt>Distance</dt><dd>about 62 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Private seller</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>Class C on a Ford E-350 chassis with a cab-over sleeping area; about $500 of engine work with new hoses; roof coated; new queen mattress; wood cabinetry; two swivel chairs; convertible dinette; side awning. The seller is selling it for a family member.</p>
+
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=33.42,-111.83" target="_blank" rel="noopener" aria-label="Map of Mesa, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-33.42--111.83.png" alt="Small map of Mesa, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Mesa, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Mesa, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.facebook.com/marketplace/item/1638452807754496" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="33" data-price="11500" data-dist="67" data-miles="95000" data-year="1998" data-seller="private" data-search="1998 coachmen catalina sport gilbert, az private seller #33 number 33">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p32-gilbert-catalina.jpg" alt="Photo of the 1998 Coachmen Catalina Sport from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 33">#33</span><h3>1998 Coachmen Catalina Sport</h3></div>
+    <p class="price">$11,500</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>November 14, 2026</dd></div>
+
+      <div><dt>Length</dt><dd>22 ft</dd></div>
+      <div><dt>Miles</dt><dd>95,000 miles</dd></div>
+      <div><dt>Where</dt><dd>Gilbert, AZ</dd></div>
+      <div><dt>Distance</dt><dd>about 67 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Private seller</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>Ford V10 on an E-350 chassis (1997 chassis, titled as a 1998); Onan 4000 generator with only 68 hours, just serviced; fresh oil and filters; tires 3 years old; everything works; microwave, air conditioning and TV; covered most of its life.</p>
+    <p class="flag"><svg aria-hidden="true" viewBox="0 0 24 24" width="17" height="17"><path fill="currentColor" d="M12 2 1.5 20.5h21L12 2zm0 6.2 5.4 9.3H6.6L12 8.2zM11 11v4h2v-4h-2zm0 5v2h2v-2h-2z"/></svg><span><strong>Check first:</strong> Two small taped blemishes on the side of the driver&rsquo;s seat.</span></p>
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=33.35,-111.79" target="_blank" rel="noopener" aria-label="Map of Gilbert, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-33.35--111.79.png" alt="Small map of Gilbert, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Gilbert, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Gilbert, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.facebook.com/marketplace/item/2294795367757417" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="1" data-price="15900" data-dist="65" data-miles="67000" data-year="2006" data-seller="private" data-search="2006 winnebago outlook 27l fountain hills, az private seller #1 number 1">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p03-fountain-hills.jpg" alt="Photo of the 2006 Winnebago Outlook 27L from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 1">#1</span><h3>2006 Winnebago Outlook 27L</h3></div>
+    <p class="price">$15,900</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>November 12, 2026</dd></div>
+      
+      <div><dt>Length</dt><dd>28 ft</dd></div>
+      <div><dt>Miles</dt><dd>67,000 miles</dd></div>
+      <div><dt>Where</dt><dd>Fountain Hills, AZ</dd></div>
+      <div><dt>Distance</dt><dd>about 65 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Private seller</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>Owned a little over a year and driven to more than 7 states; everything works as far as he knows, including dash and roof air; lighting upgraded to LED; Onan generator; clean interior; drives well; Chevy Workhorse chassis; clean paper title in hand; common Arizona decal fade.</p>
+    
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=33.60,-111.72" target="_blank" rel="noopener" aria-label="Map of Fountain Hills, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-33.60--111.72.png" alt="Small map of Fountain Hills, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Fountain Hills, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Fountain Hills, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.craigslist.org/view/d/fountain-hills-2006-winnebago-outlook/4WXWhPd5kkrG8UqzTYYAkS" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="2" data-price="19999" data-dist="75" data-miles="75000" data-year="2017" data-seller="private" data-search="2017 thor freedom elite mesa, az private seller #2 number 2">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p05-mesa-thor.jpg" alt="Photo of the 2017 Thor Freedom Elite from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 2">#2</span><h3>2017 Thor Freedom Elite</h3></div>
+    <p class="price">$19,999</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>November 11, 2026</dd></div>
+      
+      <div><dt>Length</dt><dd>24 ft</dd></div>
+      <div><dt>Miles</dt><dd>75,000 miles</dd></div>
+      <div><dt>Where</dt><dd>Mesa, AZ</dd></div>
+      <div><dt>Distance</dt><dd>about 75 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Private seller</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>Ford chassis with V10; on-board generator; full-size kitchen with fridge-freezer; lots of outdoor storage; 8,000 pound towing; 15 foot electric awning; runs and drives great.</p>
+    <p class="flag"><svg aria-hidden="true" viewBox="0 0 24 24" width="17" height="17"><path fill="currentColor" d="M12 2 1.5 20.5h21L12 2zm0 6.2 5.4 9.3H6.6L12 8.2zM11 11v4h2v-4h-2zm0 5v2h2v-2h-2z"/></svg><span><strong>Check first:</strong> Inside and outside blemishes.</span></p>
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=33.42,-111.83" target="_blank" rel="noopener" aria-label="Map of Mesa, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-33.42--111.83.png" alt="Small map of Mesa, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Mesa, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Mesa, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.craigslist.org/view/d/mesa-2017-freedom-elite-24ft-class/7ReS5mP2kyH9WEjXMKGZAR" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="3" data-price="8000" data-dist="30" data-miles="67850" data-year="2002" data-seller="private" data-search="2002 winnebago minnie winnie 29 forest lakes, az private seller #3 number 3">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p01-forest-lakes.jpg" alt="Photo of the 2002 Winnebago Minnie Winnie 29 from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 3">#3</span><h3>2002 Winnebago Minnie Winnie 29</h3></div>
+    <p class="price">$8,000</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>November 10, 2026</dd></div>
+      
+      <div><dt>Length</dt><dd>29 ft</dd></div>
+      <div><dt>Miles</dt><dd>67,850 miles</dd></div>
+      <div><dt>Where</dt><dd>Forest Lakes, AZ</dd></div>
+      <div><dt>Distance</dt><dd>about 30 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Private seller</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>Dual slide outs; mechanically in great shape; everything works, including air, heat, fridge, stove, microwave, generator and both slides; new batteries last summer; tires in great shape; price firm; open to trades.</p>
+    <p class="flag"><svg aria-hidden="true" viewBox="0 0 24 24" width="17" height="17"><path fill="currentColor" d="M12 2 1.5 20.5h21L12 2zm0 6.2 5.4 9.3H6.6L12 8.2zM11 11v4h2v-4h-2zm0 5v2h2v-2h-2z"/></svg><span><strong>Check first:</strong> Hail damage — 17 holes in the roof, water damage, and damaged awnings; the roof holes are taped and the motorhome is tarped.</span></p>
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=34.33,-110.81" target="_blank" rel="noopener" aria-label="Map of Forest Lakes, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-34.33--110.81.png" alt="Small map of Forest Lakes, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Forest Lakes, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Forest Lakes, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.craigslist.org/view/d/forest-lakes-2002-winnebago-minnie/uSwYazbfgxENyTKPsFZRPX" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="4" data-price="850" data-dist="110" data-miles="80000" data-year="1985" data-seller="private" data-search="1985 chevrolet c-30 jamboree rallye buckeye, az private seller #4 number 4">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p16-buckeye.jpg" alt="Photo of the 1985 Chevrolet C-30 Jamboree Rallye from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 4">#4</span><h3>1985 Chevrolet C-30 Jamboree Rallye</h3></div>
+    <p class="price">$850 or best offer</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>November 10, 2026</dd></div>
+      
+      <div><dt>Length</dt><dd>26 ft</dd></div>
+      <div><dt>Miles</dt><dd>80,000 miles</dd></div>
+      <div><dt>Where</dt><dd>Buckeye, AZ</dd></div>
+      <div><dt>Distance</dt><dd>about 110 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Private seller</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>Interior and exterior in great condition; clear Arizona title; four fairly new tires and two in great condition.</p>
+    <p class="flag"><svg aria-hidden="true" viewBox="0 0 24 24" width="17" height="17"><path fill="currentColor" d="M12 2 1.5 20.5h21L12 2zm0 6.2 5.4 9.3H6.6L12 8.2zM11 11v4h2v-4h-2zm0 5v2h2v-2h-2z"/></svg><span><strong>Check first:</strong> This is a project — the engine and transmission have been removed and it must be towed.</span></p>
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=33.37,-112.59" target="_blank" rel="noopener" aria-label="Map of Buckeye, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-33.37--112.59.png" alt="Small map of Buckeye, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Buckeye, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Buckeye, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.craigslist.org/view/d/goodyear-1985-chevrolet-class-motorhome/qQPGSfKFM3RQMzWPFRjqZL" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="5" data-price="7900" data-dist="85" data-miles="70000" data-year="1997" data-seller="private" data-search="1997 fleetwood jamboree sundance glendale, az private seller #5 number 5">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p19-glendale-sundance.jpg" alt="Photo of the 1997 Fleetwood Jamboree Sundance from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 5">#5</span><h3>1997 Fleetwood Jamboree Sundance</h3></div>
+    <p class="price">$7,900</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>November 7, 2026</dd></div>
+      
+      <div><dt>Length</dt><dd>Length not stated in the listing</dd></div>
+      <div><dt>Miles</dt><dd>70,000 miles</dd></div>
+      <div><dt>Where</dt><dd>Glendale, AZ</dd></div>
+      <div><dt>Distance</dt><dd>about 85 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Private seller</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>Ford 460 V8 with 70,000 original miles; Onan generator; overhead sleeping, sofa and dinette bed; kitchen and full bathroom; everything working as it should; clean title in hand.</p>
+    <p class="flag"><svg aria-hidden="true" viewBox="0 0 24 24" width="17" height="17"><path fill="currentColor" d="M12 2 1.5 20.5h21L12 2zm0 6.2 5.4 9.3H6.6L12 8.2zM11 11v4h2v-4h-2zm0 5v2h2v-2h-2z"/></svg><span><strong>Check first:</strong> One listing field says 1993 while the title and write-up say 1997 — the year needs checking.</span></p>
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=33.54,-112.19" target="_blank" rel="noopener" aria-label="Map of Glendale, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-33.54--112.19.png" alt="Small map of Glendale, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Glendale, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Glendale, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.craigslist.org/view/d/glendale-1997-fleetwood-jamboree/eMQLPwqVP9rYQChhLCwVrc" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="6" data-price="9500" data-dist="80" data-miles="92856" data-year="1997" data-seller="private" data-search="1997 fleetwood tioga montara gilbert, az private seller #6 number 6">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p17-gilbert.jpg" alt="Photo of the 1997 Fleetwood Tioga Montara from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 6">#6</span><h3>1997 Fleetwood Tioga Montara</h3></div>
+    <p class="price">$9,500</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>November 5, 2026</dd></div>
+      
+      <div><dt>Length</dt><dd>Length not stated in the listing</dd></div>
+      <div><dt>Miles</dt><dd>92,856 miles</dd></div>
+      <div><dt>Where</dt><dd>Gilbert, AZ</dd></div>
+      <div><dt>Distance</dt><dd>about 80 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Private seller</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>V10; interior completely remodeled; sleeps 6; everything works; heat and air; Onan generator; new engine battery, new air system, new microwave and sink.</p>
+    <p class="flag"><svg aria-hidden="true" viewBox="0 0 24 24" width="17" height="17"><path fill="currentColor" d="M12 2 1.5 20.5h21L12 2zm0 6.2 5.4 9.3H6.6L12 8.2zM11 11v4h2v-4h-2zm0 5v2h2v-2h-2z"/></svg><span><strong>Check first:</strong> Rebuilt title from a water leak over the cab in the past; sold as is.</span></p>
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=33.35,-111.79" target="_blank" rel="noopener" aria-label="Map of Gilbert, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-33.35--111.79.png" alt="Small map of Gilbert, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Gilbert, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Gilbert, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.craigslist.org/view/d/gilbert-1997-fleetwood-tioga-montara/nEGXRyxvgPr3AU1zJ8qXnV" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="7" data-price="17499" data-dist="85" data-miles="64000" data-year="2003" data-seller="private" data-search="2003 fleetwood tioga sl 28r glendale, az private seller #7 number 7">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p09-glendale-tioga-sl.jpg" alt="Photo of the 2003 Fleetwood Tioga SL 28R from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 7">#7</span><h3>2003 Fleetwood Tioga SL 28R</h3></div>
+    <p class="price">$17,499</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>November 3, 2026</dd></div>
+      
+      <div><dt>Length</dt><dd>28 ft</dd></div>
+      <div><dt>Miles</dt><dd>64,000 miles</dd></div>
+      <div><dt>Where</dt><dd>Glendale, AZ</dd></div>
+      <div><dt>Distance</dt><dd>about 85 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Private seller</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>Ford chassis with V10; 2 slide outs that work; Onan generator and air; clean inside and out; front tires new; mechanically in great shape; recent trip to Payson and Woods Canyon Lake with no issues; sleeps 6 to 7.</p>
+    
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=33.54,-112.19" target="_blank" rel="noopener" aria-label="Map of Glendale, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-33.54--112.19.png" alt="Small map of Glendale, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Glendale, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Glendale, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.craigslist.org/view/d/glendale-2003-fleetwood-tioga-sl-28r/dBro5rvTwPHbzrkj2H8J6c" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="8" data-price="19995" data-dist="59" data-miles="56313" data-year="2006" data-seller="dealer" data-search="2006 itasca cambria 26a phoenix, az dealer: destination rv #8 number 8">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p14-phoenix-cambria.webp" alt="Photo of the 2006 Itasca Cambria 26A from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 8">#8</span><h3>2006 Itasca Cambria 26A</h3></div>
+    <p class="price">$19,995</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>about November 3, 2026 (12 days on the site as of November 15)</dd></div>
+      
+      <div><dt>Length</dt><dd>26 ft</dd></div>
+      <div><dt>Miles</dt><dd>56,313 miles</dd></div>
+      <div><dt>Where</dt><dd>Phoenix, AZ</dd></div>
+      <div><dt>Distance</dt><dd>59 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Dealer: Destination RV</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>Single slide and rear double bed; kitchen and lounge; U-shaped dinette and lounge chair; lots of storage; shower and pantry; Triton V10.</p>
+    <p class="flag"><svg aria-hidden="true" viewBox="0 0 24 24" width="17" height="17"><path fill="currentColor" d="M12 2 1.5 20.5h21L12 2zm0 6.2 5.4 9.3H6.6L12 8.2zM11 11v4h2v-4h-2zm0 5v2h2v-2h-2z"/></svg><span><strong>Check first:</strong> The dealer notes the write-up was made with AI help, so check details with the seller.</span></p>
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=33.45,-112.07" target="_blank" rel="noopener" aria-label="Map of Phoenix, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-33.45--112.07.png" alt="Small map of Phoenix, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Phoenix, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Phoenix, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.rvtrader.com/listing/2006-Itasca-Cambria+26A-5042877590" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="9" data-price="23900" data-dist="85" data-miles="55000" data-year="2005" data-seller="private" data-search="2005 bigfoot motorhome glendale, az private seller #9 number 9">
+  <div class="photo-wrap"><div class="photo photo-none">No photo in the listing</div></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 9">#9</span><h3>2005 Bigfoot Motorhome</h3></div>
+    <p class="price">$23,900</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>November 3, 2026</dd></div>
+      
+      <div><dt>Length</dt><dd>29 ft</dd></div>
+      <div><dt>Miles</dt><dd>55,000 miles</dd></div>
+      <div><dt>Where</dt><dd>Glendale, AZ</dd></div>
+      <div><dt>Distance</dt><dd>about 85 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Private seller</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>V10 engine; 55,000 actual miles; runs and looks good; everything works; low hours on the generator; two TVs.</p>
+    
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=33.54,-112.19" target="_blank" rel="noopener" aria-label="Map of Glendale, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-33.54--112.19.png" alt="Small map of Glendale, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Glendale, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Glendale, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.craigslist.org/view/d/glendale-2005-bigfoot-motorhome-class/6C5YEoxJXvxvMzMor14oJF" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="10" data-price="11000" data-dist="70" data-miles="154000" data-year="2008" data-seller="private" data-search="2008 ford e450 four winds scottsdale, az private seller #10 number 10">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p06-scottsdale.jpg" alt="Photo of the 2008 Ford E450 Four Winds from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 10">#10</span><h3>2008 Ford E450 Four Winds</h3></div>
+    <p class="price">$11,000</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>October 30, 2026</dd></div>
+      
+      <div><dt>Length</dt><dd>29 ft</dd></div>
+      <div><dt>Miles</dt><dd>154,000 miles</dd></div>
+      <div><dt>Where</dt><dd>Scottsdale, AZ</dd></div>
+      <div><dt>Distance</dt><dd>about 70 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Private seller</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>Well maintained and ready to go today; runs great, drives smoothly, everything works; generator, cold air and heat, full kitchen, bathroom with shower, TV; clean title in hand; regularly serviced.</p>
+    
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=33.49,-111.93" target="_blank" rel="noopener" aria-label="Map of Scottsdale, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-33.49--111.93.png" alt="Small map of Scottsdale, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Scottsdale, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Scottsdale, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.craigslist.org/view/d/scottsdale-2008-e450-four-winds/uJ1gXx23jhmeWxKLLE4iLB" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="11" data-price="17500" data-dist="75" data-miles="20000" data-year="2001" data-seller="private" data-search="2001 ford tioga phoenix, az private seller #11 number 11">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p07-phoenix-tioga.jpg" alt="Photo of the 2001 Ford Tioga from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 11">#11</span><h3>2001 Ford Tioga</h3></div>
+    <p class="price">$17,500</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>October 30, 2026</dd></div>
+      
+      <div><dt>Length</dt><dd>24 ft</dd></div>
+      <div><dt>Miles</dt><dd>20,000 miles</dd></div>
+      <div><dt>Where</dt><dd>Phoenix, AZ</dd></div>
+      <div><dt>Distance</dt><dd>about 75 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Private seller</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>V10 Super Duty; clean title; no mechanical problems; runs great; one slide; full bathroom; Onan 4000 generator; sleeps 6.</p>
+    
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=33.45,-112.07" target="_blank" rel="noopener" aria-label="Map of Phoenix, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-33.45--112.07.png" alt="Small map of Phoenix, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Phoenix, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Phoenix, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.craigslist.org/view/d/phoenix-ford-tioga-rv-motorhome/quo5TiMmwypcBwnTJ3spxf" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="12" data-price="20082" data-dist="75" data-miles="27196" data-year="2013" data-seller="dealer" data-search="2013 jayco greyhawk mesa, az dealer: sullivan motor company #12 number 12">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p18-mesa-greyhawk.jpg" alt="Photo of the 2013 Jayco Greyhawk from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 12">#12</span><h3>2013 Jayco Greyhawk</h3></div>
+    <p class="price">$20,082</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>October 24, 2026</dd></div>
+      
+      <div><dt>Length</dt><dd>Length not stated in the listing</dd></div>
+      <div><dt>Miles</dt><dd>27,196 miles</dd></div>
+      <div><dt>Where</dt><dd>Mesa, AZ</dd></div>
+      <div><dt>Distance</dt><dd>about 75 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Dealer: Sullivan Motor Company</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>Triton V10, rear wheel drive, 5-speed automatic; the rest of the write-up is dealer sales talk with no more facts about this motorhome.</p>
+    <p class="flag"><svg aria-hidden="true" viewBox="0 0 24 24" width="17" height="17"><path fill="currentColor" d="M12 2 1.5 20.5h21L12 2zm0 6.2 5.4 9.3H6.6L12 8.2zM11 11v4h2v-4h-2zm0 5v2h2v-2h-2z"/></svg><span><strong>Check first:</strong> Length is not stated anywhere in the listing.</span></p>
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=33.42,-111.83" target="_blank" rel="noopener" aria-label="Map of Mesa, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-33.42--111.83.png" alt="Small map of Mesa, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Mesa, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Mesa, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.craigslist.org/view/d/mesa-2013-greyhawk-class-motorhome/bsuO-uLP8RGwb5luBgZMAg" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="13" data-price="19000" data-dist="26" data-miles="999999999" data-year="2006" data-seller="private" data-search="2006 itasca spirit tonto basin, az private seller #13 number 13">
+  <div class="photo-wrap"><div class="photo photo-none">No photo in the listing</div></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 13">#13</span><h3>2006 Itasca Spirit</h3></div>
+    <p class="price">$19,000</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>October 21, 2026</dd></div>
+      
+      <div><dt>Length</dt><dd>Length not stated</dd></div>
+      <div><dt>Miles</dt><dd>Miles not stated — seller says low miles</dd></div>
+      <div><dt>Where</dt><dd>Tonto Basin, AZ</dd></div>
+      <div><dt>Distance</dt><dd>26 miles from Payson, as listed</dd></div>
+      <div><dt>Seller</dt><dd>Private seller</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>Class C with 2 slides, queen bed with storage under it, table and couch that fold down for more beds, Fire TV; everything works great except the generator.</p>
+    <p class="flag"><svg aria-hidden="true" viewBox="0 0 24 24" width="17" height="17"><path fill="currentColor" d="M12 2 1.5 20.5h21L12 2zm0 6.2 5.4 9.3H6.6L12 8.2zM11 11v4h2v-4h-2zm0 5v2h2v-2h-2z"/></svg><span><strong>Check first:</strong> Generator needs a tune up.</span></p>
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=33.87,-111.29" target="_blank" rel="noopener" aria-label="Map of Tonto Basin, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-33.87--111.29.png" alt="Small map of Tonto Basin, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Tonto Basin, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Tonto Basin, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.facebook.com/marketplace/item/2382448049160576/" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="14" data-price="15800" data-dist="58" data-miles="157000" data-year="2003" data-seller="private" data-search="2003 thor majestic 23a phoenix, az private seller #14 number 14">
+  <div class="photo-wrap"><div class="photo photo-none">No photo in the listing</div></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 14">#14</span><h3>2003 Thor Majestic 23A</h3></div>
+    <p class="price">$15,800</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>October 21, 2026</dd></div>
+      
+      <div><dt>Length</dt><dd>23A model, about 25 ft</dd></div>
+      <div><dt>Miles</dt><dd>157,000 miles</dd></div>
+      <div><dt>Where</dt><dd>Phoenix, AZ</dd></div>
+      <div><dt>Distance</dt><dd>58 miles from Payson, as listed</dd></div>
+      <div><dt>Seller</dt><dd>Private seller</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>Very well maintained; engine running smooth and strong; Ford E350 chassis with V10; new tires; both batteries brand new; solar panel; generator, air, fridge, heating and hot water all working.</p>
+    <p class="flag"><svg aria-hidden="true" viewBox="0 0 24 24" width="17" height="17"><path fill="currentColor" d="M12 2 1.5 20.5h21L12 2zm0 6.2 5.4 9.3H6.6L12 8.2zM11 11v4h2v-4h-2zm0 5v2h2v-2h-2z"/></svg><span><strong>Check first:</strong> Cash only, no trades; price is or best offer.</span></p>
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=33.45,-112.07" target="_blank" rel="noopener" aria-label="Map of Phoenix, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-33.45--112.07.png" alt="Small map of Phoenix, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Phoenix, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Phoenix, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.facebook.com/marketplace/item/1436655531907739/" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="15" data-price="5300" data-dist="90" data-miles="40000" data-year="1989" data-seller="private" data-search="1989 ford jamboree prescott valley, az private seller #15 number 15">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p04-prescott-valley.jpg" alt="Photo of the 1989 Ford Jamboree from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 15">#15</span><h3>1989 Ford Jamboree</h3></div>
+    <p class="price">$5,300</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>October 20, 2026</dd></div>
+      
+      <div><dt>Length</dt><dd>21 ft</dd></div>
+      <div><dt>Miles</dt><dd>40,000 miles</dd></div>
+      <div><dt>Where</dt><dd>Prescott Valley, AZ</dd></div>
+      <div><dt>Distance</dt><dd>about 90 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Private seller</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>Clean inside and out; stove and oven have never been used; 460 gasoline engine; new fuel pump and new tires; generator with low hours.</p>
+    <p class="flag"><svg aria-hidden="true" viewBox="0 0 24 24" width="17" height="17"><path fill="currentColor" d="M12 2 1.5 20.5h21L12 2zm0 6.2 5.4 9.3H6.6L12 8.2zM11 11v4h2v-4h-2zm0 5v2h2v-2h-2z"/></svg><span><strong>Check first:</strong> Small repair needed on the rear room skylight.</span></p>
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=34.61,-112.32" target="_blank" rel="noopener" aria-label="Map of Prescott Valley, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-34.61--112.32.png" alt="Small map of Prescott Valley, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Prescott Valley, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Prescott Valley, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.craigslist.org/view/d/prescott-valley-owner-foot-ford/dCSJmeGoqvQKGpLcAnZ6Kj" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="16" data-price="21900" data-dist="85" data-miles="52000" data-year="2009" data-seller="private" data-search="2009 fleetwood tioga ranger glendale, az private seller #16 number 16">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p10-glendale-ranger.jpg" alt="Photo of the 2009 Fleetwood Tioga Ranger from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 16">#16</span><h3>2009 Fleetwood Tioga Ranger</h3></div>
+    <p class="price">$21,900</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>October 19, 2026</dd></div>
+      
+      <div><dt>Length</dt><dd>28 ft</dd></div>
+      <div><dt>Miles</dt><dd>52,000 miles</dd></div>
+      <div><dt>Where</dt><dd>Glendale, AZ</dd></div>
+      <div><dt>Distance</dt><dd>about 85 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Private seller</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>Second owners; Ford Triton V10; backup camera; electric steps; roof air; generator; full-body paint; 6 tires put on in 2024; 8,000 pound hitch; clean title in hand.</p>
+    
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=33.54,-112.19" target="_blank" rel="noopener" aria-label="Map of Glendale, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-33.54--112.19.png" alt="Small map of Glendale, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Glendale, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Glendale, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.craigslist.org/view/d/glendale-fleetwood-tioga-ranger/pVrxa7rv4HjCmggMh3BuJy" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="17" data-price="19975" data-dist="57" data-miles="32564" data-year="2004" data-seller="dealer" data-search="2004 fleetwood tioga 26g apache junction, az dealer: state 48 rv #17 number 17">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p13-apache-tioga26g.webp" alt="Photo of the 2004 Fleetwood Tioga 26G from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 17">#17</span><h3>2004 Fleetwood Tioga 26G</h3></div>
+    <p class="price">$19,975</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>about October 8, 2026 (38 days on the site as of November 15)</dd></div>
+      
+      <div><dt>Length</dt><dd>27 ft</dd></div>
+      <div><dt>Miles</dt><dd>32,564 miles</dd></div>
+      <div><dt>Where</dt><dd>Apache Junction, AZ</dd></div>
+      <div><dt>Distance</dt><dd>57 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Dealer: State 48 RV</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>Ford E-450 with Triton V10; rear kitchen with double sink, stove, oven, microwave and fridge; sofa slide-out; cab-over sleeping and dinette; full bathroom; huge rear storage; Onan 4000 generator with only 500 hours; no smoke or pet odors; no hidden dealer fees.</p>
+    <p class="flag"><svg aria-hidden="true" viewBox="0 0 24 24" width="17" height="17"><path fill="currentColor" d="M12 2 1.5 20.5h21L12 2zm0 6.2 5.4 9.3H6.6L12 8.2zM11 11v4h2v-4h-2zm0 5v2h2v-2h-2z"/></svg><span><strong>Check first:</strong> The write-up header still shows an old price of $29,995; the asking price is $19,975.</span></p>
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=33.42,-111.55" target="_blank" rel="noopener" aria-label="Map of Apache Junction, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-33.42--111.55.png" alt="Small map of Apache Junction, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Apache Junction, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Apache Junction, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.rvtrader.com/listing/2004-Fleetwood-TIOGA-26G-5042570895" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="18" data-price="21500" data-dist="81" data-miles="55000" data-year="2005" data-seller="private" data-search="2005 winnebago minnie winnie 26t goodyear, az private seller #18 number 18">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p15-goodyear-minnie.webp" alt="Photo of the 2005 Winnebago Minnie Winnie 26T from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 18">#18</span><h3>2005 Winnebago Minnie Winnie 26T</h3></div>
+    <p class="price">$21,500</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>about September 19, 2026 (57 days on the site as of November 15)</dd></div>
+      
+      <div><dt>Length</dt><dd>26 ft</dd></div>
+      <div><dt>Miles</dt><dd>55,000 miles</dd></div>
+      <div><dt>Where</dt><dd>Goodyear, AZ</dd></div>
+      <div><dt>Distance</dt><dd>81 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Private seller</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>Well cared for, one owner; dining area slide out; Onan generator; Ford 10-cylinder; pulls an enclosed trailer easily; large fridge-freezer; slide-out pantry; all new batteries; memory foam mattress; sleeps six; very cold air.</p>
+    
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=33.44,-112.36" target="_blank" rel="noopener" aria-label="Map of Goodyear, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-33.44--112.36.png" alt="Small map of Goodyear, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Goodyear, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Goodyear, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.rvtrader.com/listing/2005-Winnebago-MINNIE+WINNIE+26T-5042206583" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="19" data-price="12998" data-dist="57" data-miles="75457" data-year="1998" data-seller="dealer" data-search="1998 fleetwood tioga 28z apache junction, az dealer: main street rv #19 number 19">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p12-apache-tioga28z.webp" alt="Photo of the 1998 Fleetwood Tioga 28Z from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 19">#19</span><h3>1998 Fleetwood Tioga 28Z</h3></div>
+    <p class="price">$12,998</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>about September 18, 2026 (58 days on the site as of November 15)</dd></div>
+      
+      <div><dt>Length</dt><dd>28 ft</dd></div>
+      <div><dt>Miles</dt><dd>75,457 miles</dd></div>
+      <div><dt>Where</dt><dd>Apache Junction, AZ</dd></div>
+      <div><dt>Distance</dt><dd>57 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Dealer: Main Street RV</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>Ford gasoline chassis with V10 and automatic; zero slideouts, so setup is simple; cab-over sleeping or storage; lounge, dining area, kitchen, rear bed area and a private bathroom with shower; dealer lists the condition as excellent.</p>
+    
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=33.42,-111.55" target="_blank" rel="noopener" aria-label="Map of Apache Junction, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-33.42--111.55.png" alt="Small map of Apache Junction, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Apache Junction, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Apache Junction, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.rvtrader.com/listing/1998-Fleetwood-Tioga+28Z-5042187532" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+    </div>
+    <p class="no-results">No motorhomes in this section match the current sort and filter choices.</p>
+  </section>
+
+  <section aria-labelledby="h-far">
+    <div class="sec-head"><h2 id="h-far">Still for sale up to 300 miles away — very good deals only</h2><span class="sec-count">10 motorhomes</span></div>
+    <p class="sec-note">Farther away, and worth the drive only for a very good deal. Newest listing on top, by the date the listing was posted.</p>
+    <div class="grid" data-grid>
+<article class="card" data-num="20" data-price="2200" data-dist="185" data-miles="999999999" data-year="1978" data-seller="private" data-search="1978 toyota e-z rider quartzsite, az private seller #20 number 20">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p27-quartzsite.jpg" alt="Photo of the 1978 Toyota E-Z Rider from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 20">#20</span><h3>1978 Toyota E-Z Rider</h3></div>
+    <p class="price">$2,200 or best offer</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>November 11, 2026</dd></div>
+      
+      <div><dt>Length</dt><dd>17 ft</dd></div>
+      <div><dt>Miles</dt><dd>Miles not stated — odometer has rolled over</dd></div>
+      <div><dt>Where</dt><dd>Quartzsite, AZ</dd></div>
+      <div><dt>Distance</dt><dd>about 185 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Private seller</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>A small pickup-based Class C; clean Arizona title; nearly rust free; 20R engine with 4-speed stick; runs and drives excellent; in storage for 2 years.</p>
+    <p class="flag"><svg aria-hidden="true" viewBox="0 0 24 24" width="17" height="17"><path fill="currentColor" d="M12 2 1.5 20.5h21L12 2zm0 6.2 5.4 9.3H6.6L12 8.2zM11 11v4h2v-4h-2zm0 5v2h2v-2h-2z"/></svg><span><strong>Check first:</strong> The same motorhome is posted twice, the second posting asking $2,500.</span></p>
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=33.66,-114.22" target="_blank" rel="noopener" aria-label="Map of Quartzsite, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-33.66--114.22.png" alt="Small map of Quartzsite, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Quartzsite, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Quartzsite, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.craigslist.org/view/d/quartzsite-1978-toyota-17-ft-class-e/78fWQU9PSMzTbk3JBm4ZCj" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="21" data-price="16000" data-dist="235" data-miles="999999999" data-year="2002" data-seller="private" data-search="2002 itasca sundancer yuma, az private seller #21 number 21">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p28-yuma.jpg" alt="Photo of the 2002 Itasca Sundancer from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 21">#21</span><h3>2002 Itasca Sundancer</h3></div>
+    <p class="price">$16,000 or best offer</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>November 11, 2026</dd></div>
+      
+      <div><dt>Length</dt><dd>28 ft</dd></div>
+      <div><dt>Miles</dt><dd>Miles in dispute — see flag</dd></div>
+      <div><dt>Where</dt><dd>Yuma, AZ</dd></div>
+      <div><dt>Distance</dt><dd>about 235 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Private seller</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>Second owner; lived in it for six months; excellent shape; mechanically sound and everything works; 2 slide-outs; private rear bedroom; full kitchen and bathroom; Ford E-450.</p>
+    <p class="flag"><svg aria-hidden="true" viewBox="0 0 24 24" width="17" height="17"><path fill="currentColor" d="M12 2 1.5 20.5h21L12 2zm0 6.2 5.4 9.3H6.6L12 8.2zM11 11v4h2v-4h-2zm0 5v2h2v-2h-2z"/></svg><span><strong>Check first:</strong> The listing&#x27;s odometer field says 25,147 miles while the write-up says 125,157 miles — the true miles need checking.</span></p>
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=32.69,-114.62" target="_blank" rel="noopener" aria-label="Map of Yuma, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-32.69--114.62.png" alt="Small map of Yuma, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Yuma, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Yuma, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.craigslist.org/view/d/yuma-2002-winnebago/fQybdCZtSYQ1NFn8VpiZKt" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="22" data-price="19500" data-dist="330" data-miles="38000" data-year="2008" data-seller="private" data-search="2008 forest river forester las vegas, nv private seller #22 number 22">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p29-las-vegas.jpg" alt="Photo of the 2008 Forest River Forester from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 22">#22</span><h3>2008 Forest River Forester</h3></div>
+    <p class="price">$19,500</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>November 10, 2026</dd></div>
+      
+      <div><dt>Length</dt><dd>28 ft</dd></div>
+      <div><dt>Miles</dt><dd>38,000 miles</dd></div>
+      <div><dt>Where</dt><dd>Las Vegas, NV</dd></div>
+      <div><dt>Distance</dt><dd>about 330 miles by road from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Private seller</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>2 slides; V10 Triton; fully self contained; air, awning, generator; brand new tires and brand new batteries; a turn key motorhome.</p>
+    <p class="flag"><svg aria-hidden="true" viewBox="0 0 24 24" width="17" height="17"><path fill="currentColor" d="M12 2 1.5 20.5h21L12 2zm0 6.2 5.4 9.3H6.6L12 8.2zM11 11v4h2v-4h-2zm0 5v2h2v-2h-2z"/></svg><span><strong>Check first:</strong> About 255 miles in a straight line, but about 330 miles by road — over the 300-mile road limit, so it is shown last and marked.</span></p>
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=36.17,-115.14" target="_blank" rel="noopener" aria-label="Map of Las Vegas, NV on Google Maps">
+        <img class="map-img" src="assets/maps/map-36.17--115.14.png" alt="Small map of Las Vegas, NV" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Las Vegas, NV — tap to open in Google Maps</span>
+        <span class="map-cap">Las Vegas, NV — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.craigslist.org/view/d/las-vegas-2008-forest-river-forester/eaAMpMDN3ucPLzoEDT6yY2" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="23" data-price="10000" data-dist="117" data-miles="53640" data-year="1990" data-seller="private" data-search="1990 ford jamboree fleetwood tucson, az private seller #23 number 23">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p20-tucson-jamboree.jpg" alt="Photo of the 1990 Ford Jamboree Fleetwood from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 23">#23</span><h3>1990 Ford Jamboree Fleetwood</h3></div>
+    <p class="price">$10,000 or best offer</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>November 5, 2026</dd></div>
+      
+      <div><dt>Length</dt><dd>24 ft</dd></div>
+      <div><dt>Miles</dt><dd>53,640 miles</dd></div>
+      <div><dt>Where</dt><dd>Tucson, AZ</dd></div>
+      <div><dt>Distance</dt><dd>117 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Private seller</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>Built on the Ford E-350 chassis; smog pump and serpentine belt recently replaced; open to offers.</p>
+    
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=32.22,-110.97" target="_blank" rel="noopener" aria-label="Map of Tucson, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-32.22--110.97.png" alt="Small map of Tucson, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Tucson, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Tucson, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.craigslist.org/view/d/tucson-1990-ford-jamboree-rv/tmLhetLtC4dnJJEY5kkNEp" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="24" data-price="24250" data-dist="176" data-miles="132320" data-year="2017" data-seller="dealer" data-search="2017 thor majestic 23a kingman, az dealer: pop rvs #24 number 24">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p24-kingman.webp" alt="Photo of the 2017 Thor Majestic 23A from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 24">#24</span><h3>2017 Thor Majestic 23A</h3></div>
+    <p class="price">$24,250</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>about October 18, 2026 (28 days on the site as of November 15)</dd></div>
+      
+      <div><dt>Length</dt><dd>23 ft in the specs, 25 ft in the write-up</dd></div>
+      <div><dt>Miles</dt><dd>132,320 miles</dd></div>
+      <div><dt>Where</dt><dd>Kingman, AZ</dd></div>
+      <div><dt>Distance</dt><dd>176 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Dealer: Pop RVs</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>Well maintained, clean and road-tested; sleeps 5 to 6; Onan generator; gas cooktop, microwave, fridge; rear corner queen bed, cab-over bed and dinette bed.</p>
+    <p class="flag"><svg aria-hidden="true" viewBox="0 0 24 24" width="17" height="17"><path fill="currentColor" d="M12 2 1.5 20.5h21L12 2zm0 6.2 5.4 9.3H6.6L12 8.2zM11 11v4h2v-4h-2zm0 5v2h2v-2h-2z"/></svg><span><strong>Check first:</strong> The length is given two ways — 23 feet in the specs and 25 feet in the write-up.</span></p>
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=35.19,-114.05" target="_blank" rel="noopener" aria-label="Map of Kingman, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-35.19--114.05.png" alt="Small map of Kingman, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Kingman, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Kingman, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.rvtrader.com/listing/2017-Thor+Motor+Coach-Majestic+23A-5042689365" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="25" data-price="9650" data-dist="205" data-miles="61000" data-year="1995" data-seller="private" data-search="1995 winnebago minnie winnie rio rico, az private seller #25 number 25">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p26-rio-rico.jpg" alt="Photo of the 1995 Winnebago Minnie Winnie from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 25">#25</span><h3>1995 Winnebago Minnie Winnie</h3></div>
+    <p class="price">$9,650 or best offer</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>October 17, 2026</dd></div>
+      
+      <div><dt>Length</dt><dd>28 ft</dd></div>
+      <div><dt>Miles</dt><dd>61,000 miles</dd></div>
+      <div><dt>Where</dt><dd>Rio Rico, AZ</dd></div>
+      <div><dt>Distance</dt><dd>about 205 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Private seller</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>Sleeps 8; roof recoated and seams sealed; 6 new tires; new power inverter; 3 new batteries; generator serviced with a new carburetor; engine tuned up with new belts, hoses, water pump and coolant; dash and roof air work great; new LED lights.</p>
+    
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=31.53,-110.98" target="_blank" rel="noopener" aria-label="Map of Rio Rico, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-31.53--110.98.png" alt="Small map of Rio Rico, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Rio Rico, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Rio Rico, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.craigslist.org/view/d/rio-rico-1995-winnebago-minnie-300/u5tC3dmnYMcfs7TsokA9a4" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="26" data-price="14000" data-dist="197" data-miles="79776" data-year="1994" data-seller="dealer" data-search="1994 fleetwood tioga montara 28 bullhead city, az dealer: national vehicle #26 number 26">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p25-bullhead.webp" alt="Photo of the 1994 Fleetwood Tioga Montara 28 from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 26">#26</span><h3>1994 Fleetwood Tioga Montara 28</h3></div>
+    <p class="price">$14,000</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>about October 5, 2026 (41 days on the site as of November 15)</dd></div>
+      
+      <div><dt>Length</dt><dd>28 ft</dd></div>
+      <div><dt>Miles</dt><dd>79,776 miles — about 28,000 on the replacement motor</dd></div>
+      <div><dt>Where</dt><dd>Bullhead City, AZ</dd></div>
+      <div><dt>Distance</dt><dd>197 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Dealer: National Vehicle</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>Ford 460 gasoline engine; sleeps 6; two rear twin beds; a long list of recent work — transmission replaced in 2023, new heater, tires and shocks in 2024, air replaced in 2025, new battery in 2026, new brakes, new fridge, new entry door, new lights, steering column replaced.</p>
+    
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=35.15,-114.57" target="_blank" rel="noopener" aria-label="Map of Bullhead City, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-35.15--114.57.png" alt="Small map of Bullhead City, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Bullhead City, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Bullhead City, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.rvtrader.com/listing/1994-Fleetwood-Tioga+Montara+28-5042521436" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="27" data-price="19998" data-dist="117" data-miles="999999999" data-year="2007" data-seller="dealer" data-search="2007 coachmen concord 275ds diesel tucson, az dealer: freedom rv #27 number 27">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p21-tucson-concord.webp" alt="Photo of the 2007 Coachmen Concord 275DS Diesel from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 27">#27</span><h3>2007 Coachmen Concord 275DS Diesel</h3></div>
+    <p class="price">$19,998</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>about September 24, 2026 (52 days on the site as of November 15)</dd></div>
+      
+      <div><dt>Length</dt><dd>About 28 ft</dd></div>
+      <div><dt>Miles</dt><dd>Miles not stated</dd></div>
+      <div><dt>Where</dt><dd>Tucson, AZ</dd></div>
+      <div><dt>Distance</dt><dd>117 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Dealer: Freedom RV</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>Diesel motorhome; living area, full kitchen, private rear bedroom, bathroom with shower; about 70 gallons of fuel; typically one slide; sleeps up to 4.</p>
+    <p class="flag"><svg aria-hidden="true" viewBox="0 0 24 24" width="17" height="17"><path fill="currentColor" d="M12 2 1.5 20.5h21L12 2zm0 6.2 5.4 9.3H6.6L12 8.2zM11 11v4h2v-4h-2zm0 5v2h2v-2h-2z"/></svg><span><strong>Check first:</strong> The listing states no mileage.</span></p>
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=32.22,-110.97" target="_blank" rel="noopener" aria-label="Map of Tucson, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-32.22--110.97.png" alt="Small map of Tucson, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Tucson, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Tucson, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.rvtrader.com/listing/2007-Coachmen-Concord+275DS+DIESEL-5042277684" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="28" data-price="23000" data-dist="165" data-miles="165000" data-year="2019" data-seller="private" data-search="2019 thor four winds 23a green valley, az private seller #28 number 28">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p23-green-valley.webp" alt="Photo of the 2019 Thor Four Winds 23A from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 28">#28</span><h3>2019 Thor Four Winds 23A</h3></div>
+    <p class="price">$23,000</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>about September 9, 2026 (67 days on the site as of November 15)</dd></div>
+      
+      <div><dt>Length</dt><dd>25 ft</dd></div>
+      <div><dt>Miles</dt><dd>165,000 miles</dd></div>
+      <div><dt>Where</dt><dd>Green Valley, AZ</dd></div>
+      <div><dt>Distance</dt><dd>165 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Private seller</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>A former Cruise America rental; 2018 Ford E-350 chassis; 50-point inspection in April 2026; roof sealed; queen bed, cab bed and dinette bed; air and furnace; backup sensors and wifi camera; Onan generator; all in great working condition; sold as is; title available after sale.</p>
+    
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=31.85,-110.99" target="_blank" rel="noopener" aria-label="Map of Green Valley, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-31.85--110.99.png" alt="Small map of Green Valley, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Green Valley, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Green Valley, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.rvtrader.com/listing/2019-Thor+Motor+Coach-FOUR+WINDS+23A-5041407006" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+<article class="card" data-num="29" data-price="15999" data-dist="117" data-miles="280000" data-year="2010" data-seller="private" data-search="2010 four winds majestic 23a tucson, az private seller #29 number 29">
+  <div class="photo-wrap"><img class="photo" src="assets/photos/p22-tucson-majestic.webp" alt="Photo of the 2010 Four Winds Majestic 23A from its listing" loading="eager" decoding="async" onerror="this.outerHTML='<div class=&quot;photo photo-none&quot;>No photo in the listing</div>'"></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 29">#29</span><h3>2010 Four Winds Majestic 23A</h3></div>
+    <p class="price">$15,999</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>about August 20, 2026 (87 days on the site as of November 15)</dd></div>
+      
+      <div><dt>Length</dt><dd>20 ft</dd></div>
+      <div><dt>Miles</dt><dd>280,000 miles</dd></div>
+      <div><dt>Where</dt><dd>Tucson, AZ</dd></div>
+      <div><dt>Distance</dt><dd>117 miles from Payson</dd></div>
+      <div><dt>Seller</dt><dd>Private seller</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>Only 20 feet long, like a pickup truck; Ford E350 Super Duty; regularly serviced; new tires and alignment; generator freshly overhauled; kitchen gear and camping chairs included; delivery may be possible.</p>
+    <p class="flag"><svg aria-hidden="true" viewBox="0 0 24 24" width="17" height="17"><path fill="currentColor" d="M12 2 1.5 20.5h21L12 2zm0 6.2 5.4 9.3H6.6L12 8.2zM11 11v4h2v-4h-2zm0 5v2h2v-2h-2z"/></svg><span><strong>Check first:</strong> 280,000 miles — very high.</span></p>
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=32.22,-110.97" target="_blank" rel="noopener" aria-label="Map of Tucson, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-32.22--110.97.png" alt="Small map of Tucson, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Tucson, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Tucson, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.rvtrader.com/listing/2010-Four+Winds-MAJESTIC+23A-5041796641" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+    </div>
+    <p class="no-results">No motorhomes in this section match the current sort and filter choices.</p>
+  </section>
+
+  <section aria-labelledby="h-gone">
+    <div class="sec-head"><h2 id="h-gone">No longer listed</h2><span class="sec-count">1 motorhome</span></div>
+    <p class="sec-note">Sold or removed. Kept here so a motorhome you saw before is not mistaken for one still for sale.</p>
+    <div class="grid" data-grid>
+<article class="card is-sold" data-num="30" data-price="22500" data-dist="0" data-miles="155000" data-year="2016" data-seller="private" data-search="2016 thor motor coach majestic payson, az private seller #30 number 30">
+  <div class="photo-wrap"><div class="photo photo-none">No photo in the listing</div><span class="sold-badge">SOLD</span></div>
+  <div class="card-body">
+    <div class="title-row"><span class="card-num" aria-label="Listing number 30">#30</span><h3>2016 Thor Motor Coach Majestic</h3></div>
+    <p class="price">$22,500</p>
+    <dl class="facts">
+      <div><dt>Listed</dt><dd>May 10, 2026</dd></div>
+      
+      <div><dt>Length</dt><dd>25 ft</dd></div>
+      <div><dt>Miles</dt><dd>155,000 miles</dd></div>
+      <div><dt>Where</dt><dd>Payson, AZ</dd></div>
+      <div><dt>Distance</dt><dd>In Payson</dd></div>
+      <div><dt>Seller</dt><dd>Private seller</dd></div>
+    </dl>
+    <p class="says"><span class="says-label">What the seller says</span>25 feet, sleeps 6, easy to drive, pulls a trailer, everything works as it should, well maintained and clean; Onan generator, roof air, furnace, hot water, fridge-freezer, microwave, lots of storage, tow-haul mode and trailer hitch.</p>
+    <p class="status">Marked SOLD on Facebook. Last day seen: November 15, 2026.</p>
+    <div class="card-foot">
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=34.23,-111.33" target="_blank" rel="noopener" aria-label="Map of Payson, AZ on Google Maps">
+        <img class="map-img" src="assets/maps/map-34.23--111.33.png" alt="Small map of Payson, AZ" loading="lazy" width="640" height="400" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="map-fallback">Map of Payson, AZ — tap to open in Google Maps</span>
+        <span class="map-cap">Payson, AZ — tap map to open</span>
+      </a>
+      <a class="listing-btn" href="https://www.facebook.com/marketplace/item/988322027005919/" target="_blank" rel="noopener">See the listing</a>
+    </div>
+  </div>
+</article>
+    </div>
+    <p class="no-results">No motorhomes in this section match the current sort and filter choices.</p>
+  </section>
+
+  <footer>
+    <h2>Sources and notes</h2>
+    <p>Craigslist, Facebook Marketplace, and RV Trader were checked on November 16, 2026, and no other new matches were found beyond the three new listings at the top of the within-100-miles section. The RV Trader search copies were about a month old, so a very new RV Trader listing may not show yet. The Payson Roundup print classifieds could not be read — they sit behind a paid subscription. Nextdoor for Payson could not be read — its for-sale posts sit behind a sign-in.</p>
+    <p>No seller was called or messaged. Prices and listings can change; check the listing page before acting. Map images are from OpenStreetMap; tapping a map opens that town in Google Maps.</p>
+  </footer>
+</div>
+<script>
+(function(){
+  var sortSel=document.getElementById('sortSel'), sellerSel=document.getElementById('sellerSel'),
+      searchBox=document.getElementById('searchBox'), countNote=document.getElementById('countNote');
+  var grids=Array.prototype.slice.call(document.querySelectorAll('[data-grid]'));
+  grids.forEach(function(g){ Array.prototype.forEach.call(g.children,function(card,i){ card.dataset.orig=i; }); });
+  function num(card,key){ var v=parseFloat(card.dataset[key]); return isNaN(v)?0:v; }
+  function apply(){
+    var mode=sortSel.value, seller=sellerSel.value, q=searchBox.value.trim().toLowerCase(), visible=0;
+    grids.forEach(function(g){
+      var cards=Array.prototype.slice.call(g.querySelectorAll('.card'));
+      cards.sort(function(a,b){
+        if(mode==='price-asc') return num(a,'price')-num(b,'price');
+        if(mode==='price-desc') return num(b,'price')-num(a,'price');
+        if(mode==='dist-asc') return num(a,'dist')-num(b,'dist');
+        if(mode==='miles-asc') return num(a,'miles')-num(b,'miles');
+        if(mode==='year-desc') return num(b,'year')-num(a,'year');
+        if(mode==='listed-desc') return num(a,'orig')-num(b,'orig');
+        return num(a,'orig')-num(b,'orig');
+      });
+      cards.forEach(function(card){ g.appendChild(card); });
+      var any=false;
+      cards.forEach(function(card){
+        var show=(seller==='all'||card.dataset.seller===seller)&&(!q||card.dataset.search.indexOf(q)>-1);
+        card.hidden=!show; if(show){any=true; visible++;}
+      });
+      var note=g.parentElement.querySelector('.no-results');
+      if(note) note.style.display=any?'none':'block';
+    });
+    countNote.textContent=visible+' of 33 motorhomes shown';
+  }
+  sortSel.addEventListener('change',apply); sellerSel.addEventListener('change',apply);
+  searchBox.addEventListener('input',apply); apply();
+})();
+</script>
+</body>
+</html>
