@@ -32,7 +32,7 @@ h1{font-family:"Source Serif 4",Georgia,serif;font-weight:900;font-size:clamp(1.
 .dateline{font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:.82rem;color:var(--bronze);margin:0 0 14px}
 .summary{max-width:860px;margin:0 auto;color:var(--ink-soft);font-size:1.02rem}
 .summary strong{color:var(--ink)}
-.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;max-width:860px;margin:22px auto 0}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:860px;margin:22px auto 0}
 .stat{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--accent);padding:12px 8px 10px}
 .stat b{display:block;font-family:"Source Serif 4",Georgia,serif;font-size:1.9rem;line-height:1;color:var(--price)}
 .stat span{font-size:.82rem;font-weight:600;color:var(--ink-soft)}
@@ -87,6 +87,16 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
 .shortlist .sec-head{border-bottom-color:var(--bronze)}
 .perm-note{max-width:860px;margin:0 auto 10px;font-weight:700;color:var(--accent);font-size:1.02rem}
 .shortlist-box{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);padding:16px 18px;font-size:1.02rem}
+
+.choice-row{display:flex;flex-direction:column;gap:8px}
+.choice-btn{min-height:48px;font:inherit;font-weight:700;font-size:1rem;border-radius:6px;padding:10px 14px;cursor:pointer;border:2px solid var(--accent);background:var(--card);color:var(--accent)}
+.choice-btn.choice-yes{background:var(--accent);color:var(--accent-ink)}
+.choice-btn.choice-no{border-color:var(--sold);color:var(--sold)}
+.choice-btn.choice-undo{border-color:var(--bronze);color:var(--bronze)}
+.choice-btn[disabled]{opacity:.45;cursor:wait}
+.choice-btn:focus-visible{outline:3px solid var(--bronze);outline-offset:2px}
+.choice-state{margin:0;font-weight:700;color:var(--accent);font-size:.95rem}
+.choice-state:empty{display:none}
 @media (max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}}
 .no-results{display:none;background:var(--card);border:1px dashed var(--line);padding:18px;text-align:center;color:var(--ink-soft);margin-top:14px}
 @media (max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.controls{position:static}.count-note{margin-left:0}}
@@ -97,15 +107,16 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
 <header class="report">
   <div class="rule" aria-hidden="true"></div>
   <h1>Class C Motorhomes for Sale — Report for Tuesday, November 17, 2026</h1>
-  <p class="perm-note">Each motorhome keeps its number for good. Tell Muggy a number and that motorhome moves up to My Short List.</p>
+  <p class="perm-note">Each motorhome keeps its number for good. Tap a choice on any card and the card moves at once — no passcode, and every choice can be undone on the card.</p>
   <p class="dateline">Payson, Arizona &middot; Nightly update</p>
   <p class="summary">This report searched for <strong>Class C motorhomes under 30 feet and under $25,000</strong> — Payson first, then within 100 miles, then up to 300 miles for a very good deal. Private sellers were looked for first; dealers are included where they had the best price and fit. It is built for travel with Gandy and Maevy, with room the van build did not have. Every motorhome is numbered, and inside each section the newest listing stands on top — tell Muggy a number and that motorhome will move to My Short List at the top of this page.</p>
   <div class="stats" aria-label="Counts by section">
-    <div class="stat"><b>0</b><span>My Short List</span></div>
-    <div class="stat"><b>0</b><span>For sale in Payson</span></div>
-    <div class="stat"><b>23</b><span>Within 100 miles</span></div>
-    <div class="stat"><b>11</b><span>Up to 300 miles away</span></div>
-    <div class="stat sold-stat"><b>1</b><span>No longer listed</span></div>
+    <div class="stat" data-stat="shortlist"><b>0</b><span>My Short List</span></div>
+    <div class="stat" data-stat="payson"><b>0</b><span>For sale in Payson</span></div>
+    <div class="stat" data-stat="near"><b>23</b><span>Within 100 miles</span></div>
+    <div class="stat" data-stat="far"><b>11</b><span>Up to 300 miles away</span></div>
+    <div class="stat" data-stat="notforme"><b>0</b><span>Not for me</span></div>
+    <div class="stat sold-stat" data-stat="gone"><b>1</b><span>No longer listed</span></div>
   </div>
   <div class="closest">
     <h2>Closest to home</h2>
@@ -140,8 +151,10 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
 
   <section class="shortlist" aria-labelledby="h-shortlist" style="padding:18px 18px 20px">
     <div class="sec-head"><h2 id="h-shortlist">My Short List</h2><span class="sec-count">0 motorhomes</span></div>
-    <p class="sec-note">The motorhomes you want to keep at the top of your list. They keep their numbers here, so you can still tell Muggy which one you mean.</p>
-    <p class="shortlist-box">Nothing here yet. Tell Muggy the number of any motorhome on this page, and it will move up here and keep its number.</p>
+    <p class="sec-note">The motorhomes you picked with the “I am interested in this one” button. They keep their numbers here. Tap “Put this one back where it was” on a card to undo the pick.</p>
+    <p class="shortlist-box" id="shortlist-empty">Nothing here yet. Tap “I am interested in this one” on any card below, and that motorhome will move up here and keep its number.</p>
+    <div class="grid" data-grid id="grid-shortlist"></div>
+    <p class="no-results">No motorhomes in this section match the current sort and filter choices.</p>
   </section>
 
   <section aria-labelledby="h-payson">
@@ -173,6 +186,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Phoenix, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Phoenix, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.craigslist.org/view/d/phoenix-foot-class-sleeps-drives-very/oHs9pQTPB7bDg9bgafRNUT" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -199,6 +218,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Fountain Hills, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Fountain Hills, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.craigslist.org/view/d/fountain-hills-2006-winnebago-outlook/eTvxG5ZaRcmCL8bEYkCU7o" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -226,6 +251,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Mesa, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Mesa, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.facebook.com/marketplace/item/1584065896808233" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -252,6 +283,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Mesa, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Mesa, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.facebook.com/marketplace/item/1638452807754496" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -278,6 +315,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Gilbert, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Gilbert, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.facebook.com/marketplace/item/2294795367757417" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -304,6 +347,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Mesa, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Mesa, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.craigslist.org/view/d/mesa-2017-freedom-elite-24ft-class/7ReS5mP2kyH9WEjXMKGZAR" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -330,6 +379,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Forest Lakes, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Forest Lakes, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.craigslist.org/view/d/forest-lakes-2002-winnebago-minnie/uSwYazbfgxENyTKPsFZRPX" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -356,6 +411,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Buckeye, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Buckeye, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.craigslist.org/view/d/goodyear-1985-chevrolet-class-motorhome/qQPGSfKFM3RQMzWPFRjqZL" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -382,6 +443,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Glendale, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Glendale, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.craigslist.org/view/d/glendale-1997-fleetwood-jamboree/eMQLPwqVP9rYQChhLCwVrc" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -408,6 +475,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Gilbert, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Gilbert, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.craigslist.org/view/d/gilbert-1997-fleetwood-tioga-montara/nEGXRyxvgPr3AU1zJ8qXnV" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -434,6 +507,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Glendale, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Glendale, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.craigslist.org/view/d/glendale-2003-fleetwood-tioga-sl-28r/dBro5rvTwPHbzrkj2H8J6c" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -460,6 +539,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Phoenix, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Phoenix, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.rvtrader.com/listing/2006-Itasca-Cambria+26A-5042877590" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -486,6 +571,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Glendale, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Glendale, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.craigslist.org/view/d/glendale-2005-bigfoot-motorhome-class/6C5YEoxJXvxvMzMor14oJF" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -512,6 +603,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Scottsdale, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Scottsdale, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.craigslist.org/view/d/scottsdale-2008-e450-four-winds/uJ1gXx23jhmeWxKLLE4iLB" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -538,6 +635,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Phoenix, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Phoenix, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.craigslist.org/view/d/phoenix-ford-tioga-rv-motorhome/quo5TiMmwypcBwnTJ3spxf" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -564,6 +667,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Mesa, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Mesa, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.craigslist.org/view/d/mesa-2013-greyhawk-class-motorhome/bsuO-uLP8RGwb5luBgZMAg" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -590,6 +699,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Tonto Basin, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Tonto Basin, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.facebook.com/marketplace/item/2382448049160576/" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -616,6 +731,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Phoenix, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Phoenix, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.facebook.com/marketplace/item/1436655531907739/" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -642,6 +763,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Prescott Valley, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Prescott Valley, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.craigslist.org/view/d/prescott-valley-owner-foot-ford/dCSJmeGoqvQKGpLcAnZ6Kj" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -668,6 +795,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Glendale, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Glendale, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.craigslist.org/view/d/glendale-fleetwood-tioga-ranger/pVrxa7rv4HjCmggMh3BuJy" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -694,6 +827,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Apache Junction, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Apache Junction, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.rvtrader.com/listing/2004-Fleetwood-TIOGA-26G-5042570895" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -720,6 +859,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Goodyear, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Goodyear, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.rvtrader.com/listing/2005-Winnebago-MINNIE+WINNIE+26T-5042206583" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -746,6 +891,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Apache Junction, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Apache Junction, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.rvtrader.com/listing/1998-Fleetwood-Tioga+28Z-5042187532" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -778,6 +929,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Tucson, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Tucson, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.facebook.com/marketplace/item/29266587869647959" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -804,6 +961,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Quartzsite, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Quartzsite, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.craigslist.org/view/d/quartzsite-1978-toyota-17-ft-class-e/78fWQU9PSMzTbk3JBm4ZCj" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -830,6 +993,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Yuma, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Yuma, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.craigslist.org/view/d/yuma-2002-winnebago/fQybdCZtSYQ1NFn8VpiZKt" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -856,6 +1025,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Las Vegas, NV — tap to open in Google Maps</span>
         <span class="map-cap">Las Vegas, NV — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.craigslist.org/view/d/las-vegas-2008-forest-river-forester/eaAMpMDN3ucPLzoEDT6yY2" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -882,6 +1057,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Tucson, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Tucson, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.craigslist.org/view/d/tucson-1990-ford-jamboree-rv/tmLhetLtC4dnJJEY5kkNEp" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -908,6 +1089,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Kingman, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Kingman, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.rvtrader.com/listing/2017-Thor+Motor+Coach-Majestic+23A-5042689365" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -934,6 +1121,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Rio Rico, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Rio Rico, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.craigslist.org/view/d/rio-rico-1995-winnebago-minnie-300/u5tC3dmnYMcfs7TsokA9a4" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -960,6 +1153,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Bullhead City, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Bullhead City, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.rvtrader.com/listing/1994-Fleetwood-Tioga+Montara+28-5042521436" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -986,6 +1185,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Tucson, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Tucson, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.rvtrader.com/listing/2007-Coachmen-Concord+275DS+DIESEL-5042277684" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -1012,6 +1217,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Green Valley, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Green Valley, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.rvtrader.com/listing/2019-Thor+Motor+Coach-FOUR+WINDS+23A-5041407006" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -1038,11 +1249,25 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Tucson, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Tucson, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.rvtrader.com/listing/2010-Four+Winds-MAJESTIC+23A-5041796641" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
 </article>
     </div>
+    <p class="no-results">No motorhomes in this section match the current sort and filter choices.</p>
+  </section>
+
+  <section aria-labelledby="h-notforme">
+    <div class="sec-head"><h2 id="h-notforme">Not for me</h2><span class="sec-count">0 motorhomes</span></div>
+    <p class="sec-note">The motorhomes you marked with the “I am not interested in this one” button. Nothing is removed — a motorhome here keeps its number, and “Put this one back where it was” on its card undoes the choice.</p>
+    <p class="empty-line" id="notforme-empty">Nothing here yet. Tap “I am not interested in this one” on a card and that motorhome will move here.</p>
+    <div class="grid" data-grid id="grid-notforme"></div>
     <p class="no-results">No motorhomes in this section match the current sort and filter choices.</p>
   </section>
 
@@ -1072,6 +1297,12 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
         <span class="map-fallback">Map of Payson, AZ — tap to open in Google Maps</span>
         <span class="map-cap">Payson, AZ — tap map to open</span>
       </a>
+      <div class="choice-row" role="group" aria-label="Your choice for this motorhome">
+        <button type="button" class="choice-btn choice-yes" data-choice="interested">I am interested in this one</button>
+        <button type="button" class="choice-btn choice-no" data-choice="not_interested">I am not interested in this one</button>
+        <button type="button" class="choice-btn choice-undo" data-choice="none" hidden>Put this one back where it was</button>
+        <p class="choice-state" aria-live="polite"></p>
+      </div>
       <a class="listing-btn" href="https://www.facebook.com/marketplace/item/988322027005919/" target="_blank" rel="noopener">See the listing</a>
     </div>
   </div>
@@ -1119,6 +1350,67 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
   }
   sortSel.addEventListener('change',apply); sellerSel.addEventListener('change',apply);
   searchBox.addEventListener('input',apply); apply();
+})();
+</script>
+<script>
+(function(){
+  var KEY='rvChoicesV1';
+  var store={}; try{ store=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ store={}; }
+  var shortGrid=document.getElementById('grid-shortlist');
+  var notGrid=document.getElementById('grid-notforme');
+  var homes={};
+  var cards=Array.prototype.slice.call(document.querySelectorAll('.card'));
+  cards.forEach(function(card){ var g=card.closest('[data-grid]'); if(g&&g!==shortGrid&&g!==notGrid) homes[card.dataset.num]=g; });
+  function sectionOf(grid){
+    if(grid===shortGrid) return 'shortlist';
+    if(grid===notGrid) return 'notforme';
+    var sec=grid.closest('section'); if(!sec) return 'near';
+    var h=sec.querySelector('h2'); if(!h) return 'near';
+    if(h.id==='h-payson') return 'payson'; if(h.id==='h-near') return 'near';
+    if(h.id==='h-far') return 'far'; if(h.id==='h-gone') return 'gone';
+    return 'near';
+  }
+  function updateCounts(){
+    var counts={shortlist:0,payson:0,near:0,far:0,notforme:0,gone:0};
+    document.querySelectorAll('[data-grid]').forEach(function(g){
+      var key=sectionOf(g); var n=g.querySelectorAll('.card').length; counts[key]=n;
+      var sec=g.closest('section'); var c=sec?sec.querySelector('.sec-count'):null;
+      if(c) c.textContent = (key==='payson') ? (n+' found') : (n+(n===1?' motorhome':' motorhomes'));
+    });
+    document.querySelectorAll('[data-stat]').forEach(function(s){ var k=s.dataset.stat; var b=s.querySelector('b'); if(b&&counts[k]!=null) b.textContent=counts[k]; });
+    var se=document.getElementById('shortlist-empty'); if(se) se.style.display=counts.shortlist?'none':'block';
+    var ne=document.getElementById('notforme-empty'); if(ne) ne.style.display=counts.notforme?'none':'block';
+  }
+  function paint(card, choice){
+    var yes=card.querySelector('.choice-yes'), no=card.querySelector('.choice-no'),
+        undo=card.querySelector('.choice-undo'), state=card.querySelector('.choice-state');
+    if(choice==='interested'){ yes.hidden=true; no.hidden=false; undo.hidden=false; state.textContent='On My Short List. You can undo this on this card.'; }
+    else if(choice==='not_interested'){ yes.hidden=false; no.hidden=true; undo.hidden=false; state.textContent='In Not for me. You can undo this on this card.'; }
+    else { yes.hidden=false; no.hidden=false; undo.hidden=true; state.textContent=''; }
+  }
+  function move(card, choice){
+    var target = choice==='interested' ? shortGrid : choice==='not_interested' ? notGrid : homes[card.dataset.num];
+    if(target && card.parentElement!==target) target.appendChild(card);
+    paint(card, choice); updateCounts();
+  }
+  function save(num, choice){
+    if(choice==='none') delete store[num]; else store[num]=choice;
+    try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){}
+    try{ fetch('/api/choice',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({num:parseInt(num,10),choice:choice})}).catch(function(){}); }catch(e){}
+  }
+  cards.forEach(function(card){
+    card.querySelectorAll('.choice-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var choice=btn.dataset.choice;
+        card.querySelectorAll('.choice-btn').forEach(function(b){ b.disabled=true; });
+        save(card.dataset.num, choice); move(card, choice);
+        card.querySelectorAll('.choice-btn').forEach(function(b){ b.disabled=false; });
+      });
+    });
+    var saved=store[card.dataset.num];
+    if(saved==='interested'||saved==='not_interested') move(card, saved); else paint(card,'none');
+  });
+  updateCounts();
 })();
 </script>
 </body>
