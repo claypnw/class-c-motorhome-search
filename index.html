@@ -1693,6 +1693,26 @@ footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-botto
     var saved=store[card.dataset.num];
     if(saved==='interested'||saved==='not_interested') move(card, saved); else paint(card,'none');
   });
+  function syncFromStore(){
+    try{
+      fetch('/api/choice').then(function(r){ return r.json(); }).then(function(data){
+        if(!data || !data.stored) return;
+        var server={};
+        (data.choices||[]).forEach(function(row){ server[row.num]=row.choice; });
+        cards.forEach(function(card){
+          var num=card.dataset.num, sc=server[num], lc=store[num];
+          if(sc==='interested'||sc==='not_interested'){
+            if(lc!==sc){ store[num]=sc; move(card, sc); }
+          } else if(lc==='interested'||lc==='not_interested'){
+            save(num, lc);
+          }
+        });
+        try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){}
+        updateCounts();
+      }).catch(function(){});
+    }catch(e){}
+  }
+  syncFromStore();
   updateCounts();
 })();
 </script>
