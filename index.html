@@ -6,9 +6,6 @@
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="data:,">
 <title>Class C Motorhome Search — Payson</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700;8..60,900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   color-scheme: light dark;
@@ -24,21 +21,21 @@
   --sold:#ff9a8a; --shadow:0 1px 3px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);}
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;font-size:17px;line-height:1.55}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;font-size:17px;line-height:1.55}
 .wrap{max-width:1240px;margin:0 auto;padding:0 16px 56px}
 header.report{background:var(--paper);border-bottom:3px double var(--bronze);padding:34px 16px 26px;text-align:center}
 header.report .rule{width:64px;height:3px;background:var(--bronze);margin:0 auto 16px;border-radius:2px}
-h1{font-family:"Source Serif 4",Georgia,serif;font-weight:900;font-size:clamp(1.65rem,4.5vw,2.6rem);line-height:1.15;margin:0 auto 10px;max-width:22ch}
+h1{font-family:Georgia, "Times New Roman", Times, serif;font-weight:900;font-size:clamp(1.65rem,4.5vw,2.6rem);line-height:1.15;margin:0 auto 10px;max-width:22ch}
 .dateline{font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:.82rem;color:var(--bronze);margin:0 0 14px}
 .summary{max-width:860px;margin:0 auto;color:var(--ink-soft);font-size:1.02rem}
 .summary strong{color:var(--ink)}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:860px;margin:22px auto 0}
 .stat{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--accent);padding:12px 8px 10px}
-.stat b{display:block;font-family:"Source Serif 4",Georgia,serif;font-size:1.9rem;line-height:1;color:var(--price)}
+.stat b{display:block;font-family:Georgia, "Times New Roman", Times, serif;font-size:1.9rem;line-height:1;color:var(--price)}
 .stat span{font-size:.82rem;font-weight:600;color:var(--ink-soft)}
 .stat.sold-stat{border-top-color:var(--sold)} .stat.sold-stat b{color:var(--sold)}
 .closest{max-width:860px;margin:18px auto 0;background:var(--card);border:1px solid var(--line);padding:14px 18px;text-align:left}
-.closest h2{font-family:"Source Serif 4",Georgia,serif;font-size:1.08rem;margin:0 0 6px}
+.closest h2{font-family:Georgia, "Times New Roman", Times, serif;font-size:1.08rem;margin:0 0 6px}
 .closest p{margin:0;color:var(--ink-soft)} .closest strong{color:var(--ink)}
 .controls{position:sticky;top:0;z-index:20;background:var(--bg);padding:14px 0 10px;display:flex;flex-wrap:wrap;gap:10px;align-items:end;border-bottom:1px solid var(--line)}
 .controls label{font-size:.8rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-soft);display:flex;flex-direction:column;gap:5px}
@@ -47,7 +44,7 @@ h1{font-family:"Source Serif 4",Georgia,serif;font-weight:900;font-size:clamp(1.
 .count-note{font-size:.92rem;color:var(--ink-soft);align-self:center;margin-left:auto}
 section{margin-top:38px}
 .sec-head{border-bottom:2px solid var(--accent);padding-bottom:8px;margin-bottom:6px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline}
-.sec-head h2{font-family:"Source Serif 4",Georgia,serif;font-weight:700;font-size:clamp(1.35rem,3vw,1.8rem);margin:0}
+.sec-head h2{font-family:Georgia, "Times New Roman", Times, serif;font-weight:700;font-size:clamp(1.35rem,3vw,1.8rem);margin:0}
 .sec-head .sec-count{font-weight:700;color:var(--bronze)}
 .sec-note{color:var(--ink-soft);margin:6px 0 18px;max-width:75ch}
 .empty-line{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--bronze);padding:16px 18px;font-size:1.02rem}
@@ -60,8 +57,8 @@ section{margin-top:38px}
 .sold-badge{position:absolute;top:12px;left:12px;background:var(--sold);color:#fff;font-weight:700;letter-spacing:.08em;padding:5px 12px;border-radius:4px;font-size:.85rem}
 .card.is-sold .photo{filter:grayscale(.7)}
 .card-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:10px;flex:1}
-.card h3{font-family:"Source Serif 4",Georgia,serif;font-weight:700;font-size:1.28rem;line-height:1.25;margin:0}
-.price{font-size:1.45rem;font-weight:700;color:var(--price);margin:0;font-family:"Source Serif 4",Georgia,serif}
+.card h3{font-family:Georgia, "Times New Roman", Times, serif;font-weight:700;font-size:1.28rem;line-height:1.25;margin:0}
+.price{font-size:1.45rem;font-weight:700;color:var(--price);margin:0;font-family:Georgia, "Times New Roman", Times, serif}
 .facts{margin:0;display:grid;grid-template-columns:1fr 1fr;gap:7px 14px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 0}
 .facts div{min-width:0} .facts dt{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
 .facts dd{margin:0;font-weight:600;font-size:.96rem}
@@ -77,11 +74,11 @@ section{margin-top:38px}
 .listing-btn{display:flex;align-items:center;justify-content:center;min-height:48px;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:1.02rem;text-decoration:none;border-radius:6px;padding:10px 16px}
 .listing-btn:focus-visible,.map-link:focus-visible{outline:3px solid var(--bronze);outline-offset:2px}
 footer{margin-top:48px;background:var(--paper);border:1px solid var(--line);padding:22px}
-footer h2{font-family:"Source Serif 4",Georgia,serif;margin:0 0 10px;font-size:1.3rem}
+footer h2{font-family:Georgia, "Times New Roman", Times, serif;margin:0 0 10px;font-size:1.3rem}
 footer p{margin:0 0 10px;color:var(--ink-soft)} footer p:last-child{margin-bottom:0}
 
 .title-row{display:flex;gap:12px;align-items:flex-start}
-.card-num{flex:0 0 auto;font-family:"Source Serif 4",Georgia,serif;font-weight:900;font-size:1.35rem;line-height:1.15;color:var(--accent-ink);background:var(--accent);padding:6px 10px;border-radius:6px;min-width:52px;text-align:center;margin-top:1px}
+.card-num{flex:0 0 auto;font-family:Georgia, "Times New Roman", Times, serif;font-weight:900;font-size:1.35rem;line-height:1.15;color:var(--accent-ink);background:var(--accent);padding:6px 10px;border-radius:6px;min-width:52px;text-align:center;margin-top:1px}
 .card.is-sold .card-num{background:var(--sold);color:#fff}
 .shortlist{border:2px solid var(--accent);background:var(--paper);padding:0}
 .shortlist .sec-head{border-bottom-color:var(--bronze)}
